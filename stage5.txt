@@ -1,0 +1,87 @@
+# Test 1: Simple if statement
+x = 5
+if (x > 3) {
+    print "x is greater than 3"
+}
+
+# Test 2: If-else with boolean
+flag = true
+if (flag) {
+    print "Flag is true"
+} else {
+    print "Flag is false"
+}
+
+# Test 3: Nested if statements
+y = 7
+if (y > 5) {
+    if (y < 10) {
+        print "y is between 5 and 10"
+    }
+}
+
+# Test 4: While loop counter
+i = 0
+while (i < 3) {
+    print "Count: " + i
+    i = i + 1
+}
+
+# Test 5: While with break
+j = 0
+while (true) {
+    print "Infinite loop prevention: " + j
+    j = j + 1
+    if (j == 2) {
+        break
+    }
+}
+
+# Test 6: Input handling
+name = input("Enter your name: ")
+print "Hello, " + name
+
+# Test 7: Complex while with input
+total = 0
+while (total < 10) {
+    num = input("Enter a number: ")
+    total = total + num
+    print "Running total: " + total
+}
+
+# Test 8: If-else with input
+age = input("Enter your age: ")
+if (age >= 18) {
+    print "Adult"
+} else {
+    print "Minor"
+}
+
+# Test 9: Nested loops
+outer = 1
+while (outer <= 2) {
+    inner = 1
+    while (inner <= 2) {
+        print "Outer:" + outer + " Inner:" + inner
+        inner = inner + 1
+    }
+    outer = outer + 1
+}
+
+# Test 10: Complex control flow
+running = true
+attempts = 0
+while (running) {
+    cmd = input("Enter command (stop/continue): ")
+    if (cmd == "stop") {
+        running = false
+    } else {
+        attempts = attempts + 1
+        if (attempts >= 3) {
+            print "Max attempts reached"
+            running = false
+        } else {
+            print "Try again (" + attempts + "/3)"
+        }
+    }
+}

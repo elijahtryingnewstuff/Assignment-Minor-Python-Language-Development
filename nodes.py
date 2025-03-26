@@ -1,23 +1,27 @@
 from dataclasses import dataclass
 
+class StatementsNode:
+    def __init__(self, statements):
+        self.statements = statements
+
+    def __repr__(self):
+        return f"StatementsNode({self.statements})"
+
 @dataclass
 class StringNode:
     value: str
-
     def __repr__(self):
         return f'"{self.value}"'
 
 @dataclass
 class NumberNode:
     value: any
-
     def __repr__(self):
         return f"{self.value}"
 
 @dataclass
 class BooleanNode:
     value: bool
-
     def __repr__(self):
         return "true" if self.value else "false"
 
@@ -91,11 +95,6 @@ class PowerNode:
     node_b: any
 
 @dataclass
-class UnaryOpNode:
-    operator: any
-    node: any
-
-@dataclass
 class AssignNode:
     identifier: str
     expression: any
@@ -103,7 +102,41 @@ class AssignNode:
 @dataclass
 class PrintNode:
     expression: any
-
+    def __repr__(self):
+        return f"print({self.expression})" 
 @dataclass
 class IdentifierNode:
     identifier: str
+
+@dataclass
+class IfNode:
+    condition: any
+    true_block: any
+    false_block: any = None
+    def __repr__(self):
+        return f"IfNode(condition={self.condition}, true_block={self.true_block}, false_block={self.false_block})"
+
+@dataclass
+class WhileNode:
+    condition: any
+    body: any
+    def __repr__(self):
+        return f"WhileNode(condition={self.condition}, body={self.body})"
+
+@dataclass
+class BreakNode:
+    def __repr__(self):
+        return "BreakNode()"
+
+@dataclass
+class InputNode:
+    prompt: any
+    def __repr__(self):
+        return f"InputNode(prompt={self.prompt})"
+
+@dataclass
+class ModuloNode:
+    node_a: any
+    node_b: any
+
+    

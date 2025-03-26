@@ -24,11 +24,18 @@ class TokenType(Enum):
     STRING    = 19
     IDENTIFIER = 20
     PRINT     = 21
+    SEMICOLON = 22
+    LBRACE    = 23
+    RBRACE    = 24
+    IF        = 25
+    WHILE     = 26
+    BREAK     = 27
+    ELSE      = 28
+    INPUT     = 29
+    MODULO    = 30
+    ASSIGN = 31 
 
 @dataclass
 class Token:
     type: TokenType
     value: any = None
-
-    def __repr__(self):
-        return self.type.name + (f":{self.value}" if self.value is not None else "")
