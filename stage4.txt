@@ -1,0 +1,17 @@
+x = 10  
+y = x * 2  
+print y  
+
+str = "Result: "  
+str = str + (5 + 5)  
+print str  
+
+flag = true  
+if (flag) { print "Flag is true" }  
+
+a = 1.5  
+b = a / 0  // Should handle division by zero  
+print b  
+
+unused = "test"  
+print unused  

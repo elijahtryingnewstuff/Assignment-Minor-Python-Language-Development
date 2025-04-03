@@ -1,0 +1,23 @@
+# Division by zero
+1 / 0
+10 / (5 - 5)
+(10 / 0) + 5
+
+# Type mismatches
+1 == true
+0 == false
+true + 1
+false * 5
+"hello" + 5
+"10" == 10
+"true" == true
+"false" == false
+"5" + 5
+"5" * 5
+
+# Invalid operations
+1 + (2 *
+1.2 + 2.3
+true + false
+"hello" - "world"
+"5" / 5

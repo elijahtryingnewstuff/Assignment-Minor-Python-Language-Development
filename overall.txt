@@ -1,0 +1,218 @@
+# ===== LIST TESTS =====
+# 1. Basic list creation
+nums = [1, 2, 3]
+print nums  # [1, 2, 3]
+
+# 2. List indexing
+print nums[0]  # 1
+print nums[2]  # 3
+
+# 3. List concatenation
+list1 = [10, 20]
+list2 = [30, 40]
+combined = list1 + list2
+print combined  # [10, 20, 30, 40]
+
+# 4. List modification
+items = ["a", "b", "c"]
+items[1] = "X"
+print items  # ["a", "X", "c"]
+
+# 5. Nested lists
+matrix = [[1, 2], [3, 4]]
+print matrix[1][0]  # 3
+
+# 6. Empty list
+empty = []
+print empty == []  # true
+
+# 7. List length check
+print len(nums)  # 3
+
+# 8. List append
+nums.append(4)
+print nums  # [1, 2, 3, 4]
+
+# 9. List pop
+val = nums.pop()
+print val  # 4
+print nums  # [1, 2, 3]
+
+# 10. List index out of bounds
+print nums[10]  # Error: Index out of range
+
+# ===== DICTIONARY TESTS =====
+# 11. Basic dictionary
+person = {"name": "Alice", "age": 25}
+print person  # {"name": "Alice", "age": 25}
+
+# 12. Dictionary access
+print person["name"]  # "Alice"
+
+# 13. Dictionary modification
+person["age"] = 26
+print person["age"]  # 26
+
+# 14. Nested dictionaries
+data = {"key": {"nested": 42}}
+print data["key"]["nested"]  # 42
+
+# 15. Mixed key types
+mixed = {1: "one", "two": 2}
+print mixed[1]  # "one"
+print mixed["two"]  # 2
+
+# 16. Dictionary length
+print len(person)  # 2
+
+# 17. Dictionary keys
+print keys(person)  # ["name", "age"]
+
+# 18. Dictionary values
+print values(person)  # ["Alice", 26]
+
+# 19. Missing key
+print person["invalid"]  # Error: Key not found
+
+# 20. Dictionary update
+extra = {"city": "NYC"}
+person.update(extra)
+print person  # {"name": "Alice", "age": 26, "city": "NYC"}
+
+# ===== FUNCTION TESTS =====
+# 21. Basic function
+function greet() {
+  return "Hello!"
+}
+print greet()  # "Hello!"
+
+# 22. Function with args
+function add(a, b) {
+  return a + b
+}
+print add(5, 3)  # 8
+
+# 23. Recursive function
+function factorial(n) {
+  if (n <= 1) return 1
+  return n * factorial(n - 1)
+}
+print factorial(4)  # 24
+
+# 24. Global access
+global_var = 10
+function multiply(x) {
+  return x * global_var
+}
+print multiply(2)  # 20
+
+# 25. Nested calls
+print add(add(1, 2), add(3, 4))  # 10
+
+# 26. Function as value
+double = function(x) { return x * 2 }
+print double(5)  # 10
+
+# 27. Closure
+function makeCounter() {
+  count = 0
+  return function() {
+    count = count + 1
+    return count
+  }
+}
+counter = makeCounter()
+print counter()  # 1
+print counter()  # 2
+
+# 28. Default args
+function power(base, exp=2) {
+  return base ** exp
+}
+print power(3)  # 9
+print power(3, 3)  # 27
+
+# 29. Varargs
+function sumAll(...numbers) {
+  total = 0
+  for (n in numbers) {
+    total = total + n
+  }
+  return total
+}
+print sumAll(1, 2, 3)  # 6
+
+# 30. Higher-order
+function apply(func, arg) {
+  return func(arg)
+}
+print apply(double, 4)  # 8
+
+# ===== EDGE CASES =====
+# 31. Empty function
+function noop() {}
+print noop()  # null
+
+# 32. List of functions
+funcs = [double, function(x){return x+1}]
+print funcs[0](3)  # 6
+print funcs[1](3)  # 4
+
+# 33. Dict of functions
+ops = {"add": add, "mul": multiply}
+print ops["add"](2,3)  # 5
+print ops["mul"](2)  # 20
+
+# 34. Modify list in function
+function appendSeven(lst) {
+  lst.append(7)
+  return lst
+}
+print appendSeven([1,2])  # [1,2,7]
+
+# 35. Modify dict in function
+function birthday(person) {
+  person["age"] = person["age"] + 1
+  return person
+}
+print birthday({"age":30})  # {"age":31}
+
+# 36. List comprehension
+squares = [x*x for x in [1,2,3]]
+print squares  # [1,4,9]
+
+# 37. Dict comprehension
+squares = {x:x*x for x in [1,2,3]}
+print squares  # {1:1, 2:4, 3:9}
+
+# 38. Error handling
+function safeDivide(a, b) {
+  if (b == 0) return "Error"
+  return a / b
+}
+print safeDivide(4,2)  # 2
+print safeDivide(4,0)  # "Error"
+
+# 39. Nested scopes
+x = 10
+function outer() {
+  x = 20
+  function inner() {
+    return x
+  }
+  return inner()
+}
+print outer()  # 20
+print x  # 10
+
+# 40. Complex example
+function process(data) {
+  results = []
+  for (item in data) {
+    if (item % 2 == 0) {
+      results.append(item * 2)
+    }
+  }
+  return results
+}
+print process([1,2,3,4,5])  # [4,8]

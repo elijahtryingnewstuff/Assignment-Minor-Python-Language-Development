@@ -1,0 +1,18 @@
+# 1. Basic dictionary creation  
+person = {"name": "Alice", "age": 25}  
+print person["name"]  
+
+#2. Dictionary modification  
+person["age"] = 26  
+print person["age"]  
+
+#3. Nested dictionaries  
+data = {"key": {"nested": 42}}  
+print data["key"]["nested"]  
+
+#4. Mixed key types  
+mixed = {1: "one", "two": 2}  
+print mixed[1] + mixed["two"]  
+
+#5. Non-existent key (error handling)  
+print "Result:" + person["invalid"]  

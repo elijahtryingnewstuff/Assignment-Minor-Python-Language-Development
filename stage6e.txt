@@ -1,0 +1,38 @@
+// 1. List + Function  
+function sum_list(lst) {  
+  total = 0  
+  for (i = 0; i < len(lst); i = i + 1) {  
+    total = total + lst[i]  
+  }  
+  return total  
+}  
+print sum_list([1, 2, 3])  
+
+// 2. Dict + Local  
+function update_age(person, new_age) {  
+  person["age"] = new_age  
+  return person  
+}  
+alice = {"name": "Alice", "age": 25}  
+print update_age(alice, 26)  
+
+// 3. Nested Functions  
+function outer() {  
+  x = 10  
+  function inner(y) {  
+    return x * y  
+  }  
+  return inner(2)  
+}  
+print outer()  
+
+// 4. List + Dict  
+users = [{"name": "Bob", "id": 1}, {"name": "Eve", "id": 2}]  
+print users[1]["name"]  
+
+// 5. Error Handling  
+function safe_divide(a, b) {  
+  if (b == 0) return "Error: Division by zero"  
+  return a / b  
+}  
+print safe_divide(10, 0)  

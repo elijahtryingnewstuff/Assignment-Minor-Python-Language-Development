@@ -1,0 +1,22 @@
+# 1. Basic list creation and access  
+nums = [1, 2, 3]  
+print nums[0] + nums[2]  
+
+# 2. List concatenation  
+list1 = [10, 20]  
+list2 = [30, 40]  
+combined = list1 + list2  
+print combined[3]  
+
+#3. Nested lists  
+matrix = [[1, 2], [3, 4]]  
+print matrix[1][0]  
+
+# 4. List modification  
+items = ["a", "b", "c"]  
+items[1] = "X"  
+print items  
+
+# 5. Empty list edge case  
+empty = []  
+print empty == []  

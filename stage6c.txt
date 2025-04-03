@@ -1,0 +1,28 @@
+// 1. Basic function  
+function greet() {  
+  return "Hello!"  
+}  
+print greet()  
+
+// 2. Function with arguments  
+function add(a, b) {  
+  return a + b  
+}  
+print add(5, 3)  
+
+// 3. Recursive function  
+function factorial(n) {  
+  if (n <= 1) return 1  
+  return n * factorial(n - 1)  
+}  
+print factorial(4)  
+
+// 4. Function with globals  
+global_var = 10  
+function multiply(x) {  
+  return x * global_var  
+}  
+print multiply(2)  
+
+// 5. Nested function calls  
+print add(add(1, 2), add(3, 4))  

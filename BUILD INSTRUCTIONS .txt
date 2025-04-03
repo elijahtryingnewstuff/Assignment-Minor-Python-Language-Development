@@ -1,0 +1,47 @@
+Build Instructions
+
+1. Prerequisites
+-Have the latest version of Python installed (3.13+)
+-Have a development environment like Visual Studio code.
+
+2. Building setup
+-Download the zip file and extract the individuals files on your machine.
+-Open the files/folder using the development environment
+-Make sure that the files are connected to the environment by running them individually and making sure there are no errors.
+
+3. Running the code
+-To run the interpreter in interactive mode/file reading, execute the following command in the terminal, or by pressing the run button on the "main.py" file.
+
+-To run the interpreter, so it reads a source file, make sure that the source file is in the same folder that the development environment uses.
+Visual example: https://prnt.sc/Jgyqy5SNSqQh, https://prnt.sc/mLoSrEomWMBk
+The commands used in the terminal are "python main.py' <source file name>"
+
+4. Testing
+- The project includes five example source files (`example1.txt`, `example2.txt`, etc.) that demonstrate the features implemented up to Stage 2.
+- Run these files using the command above to verify the functionality. 
+"python main.py' <source file name>"
+
+5. **Virtual Machine Setup**:
+- Ensure Python (3.13+) is installed on your Azure Labs virtual machine.
+- Follow the same steps as above to build and run the project.
+
+6. The project is organized into the following files:
+
+lexer.py: Tokenizes the input into tokens.
+parser.py: Parses tokens into an abstract syntax tree (AST).
+interpreter.py: Evaluates the AST and executes the program.
+values.py: Defines the data types (e.g., Number, String, Boolean).
+nodes.py: Defines the nodes for the AST.
+tokens.py: Defines the token types.
+main.py: The entry point for the interpreter.
+
+7. Troubleshooting
+
+File Not Found Error:
+If you encounter a FileNotFoundError, ensure that the file path is correct and the file exists.
+
+Syntax Errors:
+If the interpreter raises a SyntaxError, check the input file for invalid syntax (e.g., mismatched parentheses, unsupported operations).
+
+Type Errors:
+If the interpreter raises a TypeError, ensure that operations are performed on compatible types (e.g., do not add a string and a number).

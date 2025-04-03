@@ -1,0 +1,5 @@
+"hello" + " " + "world"  
+"foo" + "bar" == "foobar"  
+"10 corgis" != "10" + " corgis"  
+"escape\ncharacters" + "\t" + "test"  
+"" == "" and "a" != "A"  
