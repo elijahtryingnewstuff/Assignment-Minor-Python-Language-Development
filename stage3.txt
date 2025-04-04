@@ -1,0 +1,51 @@
+x = 5
+if (x > 3) {
+  print "x is large"
+}
+
+if (x < 3) {
+  print "x is small"
+} else {
+  print "x is not small"
+}
+
+y = 0
+while (y < 3) {
+  print y
+  y = y + 1
+}
+
+z = 0
+total = 0
+while (z < 5) {
+  if (z == 3) {
+    break
+  }
+  total = total + z
+  z = z + 1
+}
+print total
+
+# Nested control flow
+a = 2
+b = 4
+if (a < b) {
+  if (b < 10) {
+    print "nested success"
+  }
+}
+
+# Boolean conditions
+t = true
+f = false
+if (t and not f) {
+  print "logic passes"
+}
+
+# Confirm variables persist after loops
+counter = 0
+while (counter < 2) {
+  msg = "looping"
+  counter = counter + 1
+}
+print msg

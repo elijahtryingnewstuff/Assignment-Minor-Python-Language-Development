@@ -1,0 +1,40 @@
+# Test 1: Basic dictionary creation and access
+person = {"name": "Alice", "age": 25}
+print person["name"]  # Expected: "Alice"
+
+# Test 2: Dictionary assignment
+person["age"] = 26
+print person["age"]   # Expected: 26
+print person          # Expected: {"name": "Alice", "age": 26}
+
+# Test 3: Nested dictionaries
+data = {"key": {"nested": 42}}
+print data["key"]["nested"]  # Expected: 42
+
+# Test 4: Mixed-type keys/values
+mixed = {1: "one", "two": 2}
+print mixed[1] + mixed["two"]  # Expected: "one2"
+
+# Test 5: Missing key handling
+print person["invalid"]  # Expected: Error: Key 'invalid' not found
+
+# Test 6: Dictionary concatenation (bonus)
+dict1 = {"a": 1}
+dict2 = {"b": 2}
+combined = dict1 + dict2  # Expected: {"a": 1, "b": 2} (if implemented)
+print combined
+
+# Test 7: Type checking
+print {"key": "value"} == {"key": "value"}  # Expected: true
+print {"a": 1} == {"a": 2}                 # Expected: false
+
+# Test 8: Empty dictionary
+empty = {}
+print empty == {}  # Expected: true
+
+# Test 9: Invalid key type
+bad_key = {[1,2]: "value"}  # Expected: Error (lists can't be keys)
+
+# Test 10: Non-dictionary access
+not_dict = 42
+print not_dict["key"]  # Expected: Error (not a dictionary)

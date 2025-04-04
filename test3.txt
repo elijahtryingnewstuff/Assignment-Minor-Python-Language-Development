@@ -1,0 +1,44 @@
+def greet(name) {
+  print "Hello, " + name
+}
+greet("Marina")
+
+def add(x, y) {
+  return x + y
+}
+print add(5, 7)
+
+def repeat(text, times) {
+  result = ""
+  i = 0
+  while (i < times) {
+    result = result + text
+    i = i + 1
+  }
+  return result
+}
+print repeat("na", 4)
+
+def identity(x) {
+  return x
+}
+print identity(123)
+
+def sum_list(lst) {
+  total = 0
+  i = 0
+  while (i < 3) {
+    total = total + lst[i]
+    i = i + 1
+  }
+  return total
+}
+print sum_list([1, 2, 3])
+
+def nested() {
+  def inner() {
+    return "inner"
+  }
+  return inner()
+}
+print nested()
