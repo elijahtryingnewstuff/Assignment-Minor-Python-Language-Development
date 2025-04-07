@@ -41,6 +41,7 @@ class TokenType(Enum):
     FUNCTION = 36
     RETURN = 37
     IS = 38
+    LET = 39
 
 @dataclass
 class Token:

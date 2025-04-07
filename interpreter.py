@@ -1,7 +1,7 @@
 from nodes import *
 from values import List, Dict, Number, Boolean, String
 from typing import Dict as TypeDict, Type, Any, Callable
-from values import ReturnValue, BreakSignal
+from values import ReturnValue, BreakSignal, ContinueSignal
 
 class Interpreter:
     def __init__(self):
@@ -49,7 +49,7 @@ class Interpreter:
             ReturnNode: self.visit_return,
             IsNode: self.visit_is,
             ToStringNode: self.visit_to_string,
-            ListAssignNode: self.visit_list_assign,
+            ListAssignNode: self.visit_index_assign,
             DictAccessNode: self.visit_dict_access,
         }
 
@@ -63,22 +63,31 @@ class Interpreter:
     def visit_string(self, node):
         return String(node.value)
 
-    def visit_list_assign(self, node):
-        container = self.evaluate(node.list_identifier)
+    def visit_index_assign(self, node):
+        container = self.evaluate(node.list_expr)  # Could be List or Dict
         index = self.evaluate(node.index_expr)
         value = self.evaluate(node.value_expr)
 
-        if not isinstance(container, List):
-            raise TypeError("Can only assign to lists")
+        if isinstance(container, List):
+            if not isinstance(index, Number):
+                raise TypeError("List index must be a number")
+            idx = int(index.value)
+            if idx < 0 or idx >= len(container.elements):
+                raise IndexError(f"Index {idx} out of bounds for list")
+            container.elements[idx] = value
+        elif isinstance(container, Dict):
+            if isinstance(index, (String, Number, Boolean)):
+                key = index.value
+            else:
+                raise TypeError("Dictionary key must be string, number, or boolean")
+            container.elements[key] = value
+        else:
+            raise TypeError(f"Can only assign to lists or dictionaries, got {type(container).__name__}")
 
-        if not isinstance(index, Number):
-            raise TypeError("List index must be a number")
-
-        idx = int(index.value)
-        if idx < 0 or idx >= len(container.elements):
-            raise IndexError(f"Index {idx} out of bounds for list")
-
-        container.elements[idx] = value
+        # Update scope if the list_expr is an IdentifierNode
+        if isinstance(node.list_expr, IdentifierNode):
+            self.scopes[-1][node.list_expr.identifier] = container
+        
         return value
 
 
@@ -137,6 +146,9 @@ class Interpreter:
         return Number(left.value / right.value)
 
 
+    def visit_continue(self, node):
+        raise ContinueSignal()
+
     def visit_modulo(self, node):
         left = self.evaluate(node.node_a)
         right = self.evaluate(node.node_b)
@@ -156,7 +168,8 @@ class Interpreter:
     def visit_equals(self, node):
         left = self.evaluate(node.node_a)
         right = self.evaluate(node.node_b)
-
+        if isinstance(left, Number) and isinstance(right, Number):
+            return Boolean(abs(left.value - right.value) < 1e-9)
         if isinstance(left, Dict) and isinstance(right, Dict):
             return Boolean(left.elements == right.elements)
         if isinstance(left, List) and isinstance(right, List):
@@ -245,8 +258,7 @@ class Interpreter:
 
     def visit_print(self, node):
         value = self.evaluate(node.expression)
-        print(value)
-        return value
+        return value  # Return instead of printing
 
     def visit_identifier(self, node):
         for scope in reversed(self.scopes):
@@ -260,44 +272,40 @@ class Interpreter:
             raise TypeError("Condition in if statement must be boolean")
 
         if condition.value:
-            self.scopes.append({})
             for stmt in node.body:
                 result = self.evaluate(stmt)
-                if isinstance(result, ReturnValue):
-                    self.scopes.pop()
-                    return result
-            self.scopes.pop()
-
+                if isinstance(result, ReturnException):
+                    return result.value
         elif node.else_body:
-            self.scopes.append({})
             for stmt in node.else_body:
                 result = self.evaluate(stmt)
-                if isinstance(result, ReturnValue):
-                    self.scopes.pop()
-                    return result
-            self.scopes.pop()
-
+                if isinstance(result, ReturnException):
+                    return result.value
+        return None
 
 
 
     def visit_while(self, node):
-        self.scopes.append({})
         while True:
             condition = self.evaluate(node.condition)
             if not isinstance(condition, Boolean):
                 raise TypeError("Condition in while loop must be boolean")
             if not condition.value:
                 break
-            for stmt in node.body:
-                result = self.evaluate(stmt)
-                if isinstance(result, BreakSignal):
-                    self.scopes.pop()
-                    return
-                if isinstance(result, ReturnValue):
-                    self.scopes.pop()
-                    return result
-        self.scopes.pop()
-
+            try:
+                for stmt in node.body:
+                    result = self.evaluate(stmt)
+                    if isinstance(result, BreakSignal):
+                        return None
+                    elif isinstance(result, ContinueSignal):
+                        break
+                    elif isinstance(result, ReturnException):
+                        return result.value
+            except Exception as e:
+                raise e
+        return None
+                    
+   
 
     def visit_break(self, node):
         return BreakSignal()
@@ -320,17 +328,7 @@ class Interpreter:
     def visit_index(self, node):
         container = self.evaluate(node.list_identifier)
         index = self.evaluate(node.index_expr)
-
-        if isinstance(container, List):
-            if not isinstance(index, Number):
-                raise TypeError("List index must be a number")
-            idx = int(index.value)
-            try:
-                return container.elements[idx]
-            except IndexError:
-                raise IndexError(f"List index {idx} out of range")
-
-        elif isinstance(container, Dict):
+        if isinstance(container, Dict):
             if isinstance(index, (String, Number, Boolean)):
                 key = index.value
                 if key in container.elements:
@@ -338,7 +336,14 @@ class Interpreter:
                 raise KeyError(f"Key '{key}' not found in dictionary")
             else:
                 raise TypeError("Dictionary key must be string, number, or boolean")
-
+        elif isinstance(container, List):
+            if not isinstance(index, Number):
+                raise TypeError("List index must be a number")
+            idx = int(index.value)
+            try:
+                return container.elements[idx]
+            except IndexError:
+                raise IndexError(f"List index {idx} out of range")
         else:
             raise TypeError(f"Cannot index into object of type '{type(container).__name__}'")
 
@@ -354,7 +359,7 @@ class Interpreter:
         value = self.evaluate(node.value_expr)
 
         if not isinstance(dict_obj, Dict):
-            raise TypeError("Can only assign to dictionaries")
+            raise TypeError(f"Can only assign to dictionaries, got {type(dict_obj).__name__}")
 
         if isinstance(key, (String, Number, Boolean)):
             key = key.value
@@ -362,20 +367,23 @@ class Interpreter:
             raise TypeError("Invalid dictionary key type")
 
         dict_obj.elements[key] = value
+        if node.is_local and isinstance(dict_obj, Dict):
+            self.scopes[-1][dict_obj] = dict_obj  # Store in current scope
         return dict_obj
+        
 
 
     def visit_dict_access(self, node):
         dict_obj = self.evaluate(node.dict_expr)
 
-        if not isinstance(dict_obj, Dict):
-            raise TypeError(f"Expected dictionary or list, got {type(dict_obj).__name__}")
-
+        if not isinstance(dict_obj, Dict):  # Only expect Dict here
+            raise TypeError(f"Expected dictionary, got {type(dict_obj).__name__}")
+        
         key = self.evaluate(node.key_expr)
         if isinstance(key, (String, Number, Boolean)):
             key = key.value
         else:
-            raise TypeError(f"Dictionary key must be string, number or boolean, got {type(key).__name__}")
+            raise TypeError(f"Dictionary key must be string, number, or boolean, got {type(key).__name__}")
 
         if key not in dict_obj.elements:
             raise KeyError(f"Key '{key}' not found in dictionary")
@@ -383,35 +391,23 @@ class Interpreter:
         return dict_obj.elements[key]
 
     def visit_function(self, node):
+        closure_scope = self.scopes[-1].copy()  # Capture current scope
         self.functions[node.name] = {
             'parameters': node.parameters,
-            'body': node.body
-        }
+            'body': node.body,
+            'closure': closure_scope  # Store closure
+    }
         return None
 
     def visit_call(self, node):
         if node.name not in self.functions:
             raise NameError(f"Function '{node.name}' is not defined")
-        
         func = self.functions[node.name]
         if len(node.arguments) != len(func["parameters"]):
             raise TypeError(f"Expected {len(func['parameters'])} arguments, got {len(node.arguments)}")
         
         evaluated_args = [self.evaluate(arg) for arg in node.arguments]
-        
-        # Handle built-in to_string
-        if node.name == "to_string":
-            value = evaluated_args[0]
-            if isinstance(value, Number):
-                return String(str(value.value))
-            elif isinstance(value, Boolean):
-                return String(str(value.value))
-            elif isinstance(value, String):
-                return value  # No conversion needed
-            raise TypeError(f"Cannot convert {type(value).__name__} to string")
-        
-        # Existing function call logic
-        new_scope = dict(zip(func["parameters"], evaluated_args))
+        new_scope = {**func["closure"], **dict(zip(func["parameters"], evaluated_args))}  # Merge closure scope
         self.scopes.append(new_scope)
         self.in_function = True
         
@@ -419,11 +415,15 @@ class Interpreter:
             result = None
             for stmt in func["body"]:
                 result = self.evaluate(stmt)
-                if isinstance(result, ReturnException):
+                if isinstance(result, ReturnException):  # Handle return correctly
+                    self.scopes.pop()
                     return result.value
-            return result
-        finally:
             self.scopes.pop()
+            return result
+        except Exception as e:
+            self.scopes.pop()
+            raise e
+        finally:
             self.in_function = False
 
     def visit_return(self, node):
@@ -469,7 +469,10 @@ class Interpreter:
         return List(evaluated_elements)
     
     
-
+    def visit_local_assign(self, node):
+        value = self.evaluate(node.expression)
+        self.scopes[-1][node.identifier] = value  # Store in current scope
+        return value
 
     def evaluate(self, node):
         node_type = type(node)
@@ -484,3 +487,5 @@ class ReturnException(Exception):
 
 class BreakException(Exception):
     pass
+
+

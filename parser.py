@@ -58,26 +58,43 @@ class Parser:
         return self.expr()
 
     def parse_assignment_or_identifier(self):
-        identifier = self.current_token.value
-        self.advance()
+        # Check for 'let' keyword first
+        is_local = False
+        if self.current_token and self.current_token.type == TokenType.LET:
+            is_local = True
+            self.advance()  # Skip 'let'
+            
+            if not self.current_token or self.current_token.type != TokenType.IDENTIFIER:
+                raise SyntaxError("Expected identifier after 'let'")
+                
+            identifier = self.current_token.value
+            self.advance()
+        else:
+            identifier = self.current_token.value
+            self.advance()
 
-        # Build initial node as identifier (could become IndexNode)
+        # Build initial node as identifier (could become IndexNode or DictAccessNode)
         node = IdentifierNode(identifier)
 
-        # Handle indexing (e.g., person["age"])
+        # Handle indexing (e.g., person["age"], nums[0])
         if self.current_token and self.current_token.type == TokenType.LBRACKET:
-            node = self.handle_possible_indexing(node)
+            self.advance()  # Skip '['
+            key = self.expr()  # Parse full expression inside brackets
+            if not self.current_token or self.current_token.type != TokenType.RBRACKET:
+                raise SyntaxError("Expected ']' after index")
+            self.advance()  # Skip ']'
+            # Use IndexNode for now; interpreter will handle type checking
+            node = IndexNode(node, key)
 
-        # Handle assignment (e.g., person = {...}, or person["age"] = 26)
+        # Handle assignment (e.g., person = {...}, person["age"] = 21, nums[0] = 5)
         if self.current_token and self.current_token.type == TokenType.ASSIGN:
             self.advance()
             value = self.expr()
-            if isinstance(node, DictAccessNode):
-                return DictAssignNode(node.dict_expr, node.key_expr, value)
-            elif isinstance(node, IndexNode):
+            if isinstance(node, IndexNode):
+                # Defer to interpreter to decide if it's a list or dict
                 return ListAssignNode(node.list_identifier, node.index_expr, value)
             elif isinstance(node, IdentifierNode):
-                return AssignNode(node.identifier, value)
+                return AssignNode(node.identifier, value) if not is_local else LocalAssignNode(node.identifier, value)
 
         # Function call (e.g., print something())
         if self.current_token and self.current_token.type == TokenType.LPAREN:
@@ -180,29 +197,16 @@ class Parser:
     def handle_possible_indexing(self, node):
         while self.current_token and self.current_token.type == TokenType.LBRACKET:
             self.advance()  # Skip '['
-            index = self.expr()  # Parse full expression inside brackets
+            key = self.expr()  # Parse full expression inside brackets
             if not self.current_token or self.current_token.type != TokenType.RBRACKET:
                 raise SyntaxError("Expected ']' after index")
             self.advance()  # Skip ']'
-            node = IndexNode(node, index)
+            node = IndexNode(node, key)  # Always use IndexNode, let interpreter decide type
         return node
+        
 
     def expr(self):
         return self.logic_or()
-
-    def logic_or(self):
-        left = self.logic_and()
-        while self.current_token and self.current_token.type == TokenType.OR:
-            self.advance()
-            left = OrNode(left, self.logic_and())
-        return left
-
-    def logic_and(self):
-        left = self.comp()
-        while self.current_token and self.current_token.type == TokenType.AND:
-            self.advance()
-            left = AndNode(left, self.comp())
-        return left
 
 
     def add_sub(self):
@@ -425,12 +429,7 @@ class Parser:
             if not self.current_token or self.current_token.type != TokenType.RBRACKET:
                 raise SyntaxError("Expected ']' after index")
             self.advance()  # Skip ']'
-            
-            # Use DictAccessNode for dictionaries, IndexNode for lists
-            if isinstance(node, DictNode) or isinstance(node, IdentifierNode):
-                node = DictAccessNode(node, key)
-            else:
-                node = IndexNode(node, key)
+            node = IndexNode(node, key)  # Always use IndexNode
         return node
     
     def create_binary_node(self, operator, left, right):

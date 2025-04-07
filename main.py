@@ -41,21 +41,22 @@ def run_tests_from_file(filename):
                         for statement in statements:
                             if isinstance(statement, PrintNode):
                                 result = interpreter.evaluate(statement.expression)
-                                print(result)
+                                if result is not None:
+                                    print(result)
                             else:
                                 result = interpreter.evaluate(statement)
                                 if result is not None and not isinstance(statement, ListAssignNode):
                                     print(result)
                     except ReturnException as e:
-                        print(e.value)
+                        print(f"{e.value}")
                     except Exception as e:
-                        print(f"Error: {e}")
+                        print(f"Error: \"{e}\"")
                     current_block = []
             
             if current_block:
                 text = '\n'.join(current_block)
                 try:
-                    print(f"calc > {text}")  # Print the equation/statement first
+                    print(f"calc > {text}")
                     lexer = Lexer(text)
                     tokens = list(lexer.generate_tokens())
                     parser = Parser(tokens)
@@ -64,20 +65,22 @@ def run_tests_from_file(filename):
                     for statement in statements:
                         if isinstance(statement, PrintNode):
                             result = interpreter.evaluate(statement.expression)
-                            print(result)
+                            if result is not None:
+                                print(result)
                         else:
                             result = interpreter.evaluate(statement)
                             if result is not None and not isinstance(statement, ListAssignNode):
                                 print(result)
                 except ReturnException as e:
-                    print(e.value)
+                    print(f"{e.value}")
                 except Exception as e:
-                    print(f"Error: {e}")
+                    print(f"Error: \"{e}\"")
                     
     except FileNotFoundError:
         print(f"Error: File '{filename}' not found")
     except Exception as e:
         print(f"Unexpected error: {e}")
+
 
 def is_balanced(text):
     stack = []

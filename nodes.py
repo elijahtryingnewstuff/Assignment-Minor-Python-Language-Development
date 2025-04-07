@@ -204,3 +204,14 @@ class DictAssignNode:
     dict_expr: any
     key_expr: any
     value_expr: any
+    is_local: bool = False
+
+@dataclass
+class ContinueNode:
+    pass
+
+@dataclass
+class ListAssignNode:
+    list_expr: any
+    index_expr: any
+    value_expr: any

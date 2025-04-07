@@ -17,6 +17,7 @@ MULTI_CHAR_TOKENS = {
     'def': TokenType.FUNCTION,
     'is': TokenType.IS,
     '**': TokenType.POW,
+    'let': TokenType.LET,
 }
 
 class Lexer:

@@ -51,3 +51,6 @@ class ReturnValue:
 
 class BreakSignal:
     pass
+
+class ContinueSignal:
+    pass
