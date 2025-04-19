@@ -1,0 +1,72 @@
+# Test Case 1: Simple variable assignment and printing
+x = 10
+print x
+
+# Test Case 2: Variable update with arithmetic
+x = x + 5
+print x
+
+# Test Case 3: Floating-point operations
+y = 2.5
+y = y * 2
+print y
+
+# Test Case 4: String concatenation
+text = "hello"
+text = text + " world"
+print text
+
+# Test Case 5: Boolean variable assignment and printing
+flag = true
+print flag
+
+# Test Case 6: Boolean negation
+flag = !flag
+print flag
+
+# Test Case 7: Mixed arithmetic and boolean
+result = (5 < 10) and true
+print result
+
+# Test Case 8: Invalid type conversion (number + string)
+errorTest = 5
+errorTest = errorTest + "hello"
+print errorTest
+
+# Test Case 9: Variable reassignment with different type
+x = 10
+x = "now a string"
+print x
+
+# Test Case 10: Nested expressions with variables
+a = 5
+b = 10
+c = (a + b) * 2
+print c
+
+# Test Case 11: Using variables in boolean expressions
+x = 10
+y = 5
+result = (x > y) and (y < 20)
+print result
+
+# Test Case 12: Printing multiple variables
+x = 10
+y = 20
+print x
+print y
+
+# Test Case 13: Variable not defined
+print z
+
+# Test Case 14: Division by zero
+x = 10
+y = 0
+z = x / y
+print z
+
+# Test Case 15: Complex expression with variables
+x = 10
+y = 5
+z = (x + y) * 2 - (y / 2)
+print z

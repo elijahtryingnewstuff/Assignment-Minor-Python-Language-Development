@@ -1,0 +1,15 @@
+"hello" + " " + "world"
+"123" + "456"
+"true" + "false"
+"hello" == "hello"
+"hello" == "world"
+"hello" != "world"
+"hello" != "hello"
+"hello" + "world" == "helloworld"
+"hello" + "world" != "hello world"
+"apple" < "banana"
+"banana" > "apple"
+"hello" <= "hello"
+"world" >= "hello"
+"hello" + 123
+"true" == true
