@@ -1,0 +1,46 @@
+x = 100
+
+def test_scope() {
+  x = 5
+  y = 10
+  return x + y
+}
+print test_scope()
+
+print x
+
+def counter() {
+  i = 0
+  total = 0
+  while (i < 3) {
+    total = total + i
+    i = i + 1
+  }
+  return total
+}
+print counter()
+
+def shadow() {
+  x = "local"
+  return x
+}
+print shadow()
+
+print x
+
+def multiple_calls(a) {
+  x = a * 2
+  return x
+}
+print multiple_calls(3)
+print multiple_calls(10)
+
+def inner_scope_test() {
+  a = 1
+  if (true) {
+    b = 2
+    a = a + b
+  }
+  return a
+}
+print inner_scope_test()

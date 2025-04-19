@@ -1,0 +1,41 @@
+nums = [10, 20, 30, 40]
+print nums
+
+print nums[0]
+print nums[1] + nums[2]
+
+nums[2] = 35
+print nums[2]
+
+i = 0
+while (i < 4) {
+  print nums[i]
+  i = i + 1
+}
+
+# Summing list elements using loop
+total = 0
+index = 0
+while (index < 4) {
+  total = total + nums[index]
+  index = index + 1
+}
+print total
+
+# Modify all elements in-place
+i = 0
+while (i < 4) {
+  nums[i] = nums[i] + 1
+  i = i + 1
+}
+print nums
+
+# Nested lists
+nested = [[1, 2], [3, 4]]
+print nested[0][1]
+print nested[1][0] + nested[1][1]
+
+
+ print nums["0"]
+
+ print nums[10]

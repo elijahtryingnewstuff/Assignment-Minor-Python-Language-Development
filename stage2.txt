@@ -1,0 +1,63 @@
+a = 10
+print a
+
+b = "marina"
+print b
+
+c = true
+print c
+
+d = [1, 2, 3]
+print d
+
+e = {"x": 5}
+print e
+
+f = a + 5
+print f
+
+g = b + " aslanidou"
+print g
+
+h = not c
+print h
+
+i = d[0] + d[1]
+print i
+
+j = e["x"] + 10
+print j
+
+# Reassign variable with same type
+a = 50
+print a
+
+b = "coder"
+print b
+
+# Shadow variable inside function
+x = "global"
+
+def test_shadow() {
+  x = "local"
+  return x
+}
+print test_shadow()
+print x
+
+# Variable in conditional
+value = 20
+if (value > 10) {
+  msg = "above ten"
+}
+print msg
+
+# Type error: uncomment if testing strict rejection
+# bad = "score: " + 100
+# print bad
+
+
+# Uncomment to test strict rejection
+# print "5" == 5
+# print true + 1
+# print [1, 2] + "oops"

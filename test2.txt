@@ -1,0 +1,45 @@
+# Create an empty dictionary
+d = {}
+print d == {}                
+
+# Assign different types of values
+d["name"] = "Marina"
+d["age"] = 20
+d["is_student"] = true
+d["grades"] = [10, 9, 8]
+d["profile"] = {"city": "Athens", "code": 1337}
+
+print d["name"]                
+print d["age"] + 2           
+print d["is_student"] == true 
+print d["grades"][0]          
+print d["profile"]["city"]    
+
+# Overwrite existing key
+d["name"] = "Dr. Marina"
+print d["name"]               
+
+# Mixed key types (number, string, boolean)
+d[1] = "one"
+d[true] = "yes"
+print d[1]                   
+print d[true]                
+
+# Key not found
+print d["unknown"]          
+
+# Invalid key type (e.g., list as key)
+bad = {[1, 2]: "fail"}       
+
+# Dictionary inside dictionary
+deep = {"outer": {"inner": {"value": 123}}}
+print deep["outer"]["inner"]["value"]  
+
+# Dictionary comparison
+a = {"x": 1, "y": 2}
+b = {"y": 2, "x": 1}
+print a == b                
+
+# Dictionary addition (bonus if supported)
+combined = a + {"z": 3}
+print combined                

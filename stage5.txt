@@ -1,0 +1,37 @@
+person = {"name": "Marina", "age": 20}
+print person
+print person["name"]
+print person["age"] + 5
+
+person["age"] = 21
+print person["age"]
+
+nested = {"profile": {"city": "Athens", "code": 1337}}
+print nested["profile"]["city"]
+print nested["profile"]["code"]
+
+# Mixed-type keys
+mixed = {1: "one", "two": 2, true: "yes"}
+print mixed[1]
+print mixed["two"]
+print mixed[true]
+
+# Dictionary equality
+a = {"x": 1, "y": 2}
+b = {"y": 2, "x": 1}
+print a == b
+
+# Dictionary merge (if supported)
+c = {"z": 3}
+combined = a + c
+print combined
+
+# Empty dictionary and comparison
+empty = {}
+print empty == {}
+
+# Key error (optional strict handling)
+# print person["invalid"]
+
+# Invalid key type (optional strict handling)
+# bad = {[1,2]: "fail"}
